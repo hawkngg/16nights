@@ -112,7 +112,7 @@
             box-shadow: 0 0 10px rgba(140, 59, 59, 0.5);
         }
 
-        /* ================= 3. 遊戲首頁 (進入遊戲 - 標題Logo圖片優化) ================= */
+        /* ================= 3. 遊戲首頁 (標題Logo圖片浮空 & 背景浮光特效) ================= */
         #title-view {
             background: radial-gradient(circle, #141210 0%, #030303 100%);
             display: flex;
@@ -129,54 +129,62 @@
             align-items: center;
         }
 
-        /* 留空標題圖片專用容器 */
+        /* 標題圖片容器（配置背景金色浮光閃爍與收窄距離） */
         .title-logo-container {
-            margin-bottom: 50px;
+            margin-bottom: 40px; /* 收窄與進入遊戲按鈕的垂直距離 */
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 200px;
+            min-height: 40px;
+            position: relative;
         }
 
-        /* 標題圖片樣式：預設未匯入時以虛線框和文字佔位符顯示 */
+        /* 金色浮光背景動畫 */
+        .title-logo-container::before {
+            content: "";
+            position: absolute;
+            width: 1520px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(216, 190, 145, 0.25) 0%, rgba(216, 190, 145, 0.05) 50%, rgba(3, 3, 3, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(30px);
+            animation: gold-glimmer 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes gold-glimmer {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.6;
+                background: radial-gradient(circle, rgba(216, 190, 145, 0.2) 0%, rgba(216, 190, 145, 0.03) 50%, rgba(3, 3, 3, 0) 70%);
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 0.95;
+                background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(216, 190, 145, 0.08) 50%, rgba(3, 3, 3, 0) 70%);
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0.7;
+                background: radial-gradient(circle, rgba(218, 165, 32, 0.25) 0%, rgba(216, 190, 145, 0.04) 50%, rgba(3, 3, 3, 0) 70%);
+            }
+        }
+
+        /* 標題圖片：完美浮動動畫，移除臨時虛線提示框，直接支持自定義標題圖片 */
         .main-title-logo {
-            max-width: 580px;
-            max-height: 190px;
+            max-width: 1580px;
+            max-height: 1190px;
             width: auto;
             height: auto;
             object-fit: contain;
-            border: 1px dashed #8e7249;
-            padding: 20px;
-            background: rgba(20, 18, 16, 0.45);
             transition: all 0.5s ease;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.95));
+            animation: logo-float 4s infinite ease-in-out; /* 引入上下浮動 */
         }
 
-        /* 當 src 為空或未加載時，使用 CSS ::after 渲染一個精美的古風提示框，方便用戶自己填入網址 */
-        .main-title-logo[src=""], .main-title-logo:not([src]) {
-            position: relative;
-            min-width: 450px;
-            min-height: 150px;
-        }
-        
-        .main-title-logo[src=""]::after, .main-title-logo:not([src])::after {
-            content: "【請在此處插入《古文十六夜》Logo 圖片】";
-            color: #d8be91;
-            font-family: 'Kaiti', 'DFKai-SB', serif;
-            font-size: 1.8rem;
-            letter-spacing: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: #0f0d0b;
-            box-sizing: border-box;
-            border-radius: 4px;
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
         .btn-enter-game {
@@ -194,6 +202,7 @@
             0% { box-shadow: 0 0 10px rgba(216, 190, 145, 0.2); }
             100% { box-shadow: 0 0 25px rgba(216, 190, 145, 0.6); }
         }
+
 
         /* ================= 4. 簡約國風性別選擇界面 ================= */
         #gender-view {
@@ -311,7 +320,7 @@
         /* 單個字碑 - 高度大幅加高 (290px -> 360px) */
         .stele-card {
             flex: 0 0 230px; /* 寬度稍微拉寬 */
-            height: 360px;   /* 再次拉長卡片，使全螢幕下視覺更具延伸感與震撼力 */
+            height: 420px;   /* 再次拉長卡片，使全螢幕下視覺更具延伸感與震撼力 */
             background-color: #12100e;
             background-size: cover;
             background-position: center;
@@ -753,7 +762,7 @@
         <div class="title-container">
             <!-- 預留標題圖片位置：當 src="" 時以虛線框和文字佔位符顯示，您可以直接把您的圖片地址填寫在 src 中 -->
             <div class="title-logo-container">
-                <img id="title-logo" class="main-title-logo" src="" alt="古文十六夜 Logo">
+                <img id="title-logo" class="main-title-logo" src="images/logo/title_logo.png" alt="古文十六夜 Logo">
             </div>
             <button class="btn-ink btn-enter-game" onclick="pressEnterGame()">進入遊戲</button>
         </div>
