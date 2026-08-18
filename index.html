@@ -2,7 +2,8 @@
 <html lang="zh-Hant-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 確保行動裝置螢幕縮放正確 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>古文十六夜</title>
     <style>
         /* ================= 1. 全局古典暗黑美學 ================= */
@@ -68,7 +69,7 @@
             color: #ffffff;
         }
 
-        /* ================= 2. 全局控制欄 (左上全螢幕 & 右上重置) ================= */
+        /* ================= 2. 全局控制欄 ================= */
         .global-controls {
             position: absolute;
             top: 20px;
@@ -77,11 +78,11 @@
             display: flex;
             justify-content: space-between;
             z-index: 1000;
-            pointer-events: none; /* 允許穿透 */
+            pointer-events: none;
         }
 
         .btn-control {
-            pointer-events: auto; /* 啟用按鈕點擊 */
+            pointer-events: auto;
             background: rgba(20, 18, 16, 0.75);
             border: 1px solid #8e7249;
             color: #d8be91;
@@ -112,7 +113,7 @@
             box-shadow: 0 0 10px rgba(140, 59, 59, 0.5);
         }
 
-        /* ================= 3. 遊戲首頁 (標題Logo圖片浮空 & 背景浮光特效) ================= */
+        /* ================= 3. 遊戲首頁 (浮空 & 金光特效) ================= */
         #title-view {
             background: radial-gradient(circle, #141210 0%, #030303 100%);
             display: flex;
@@ -129,57 +130,42 @@
             align-items: center;
         }
 
-        /* 標題圖片容器（配置背景金色浮光閃爍與收窄距離） */
         .title-logo-container {
-            margin-bottom: 40px; /* 收窄與進入遊戲按鈕的垂直距離 */
+            margin-bottom: 25px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 40px;
+            min-height: 220px;
             position: relative;
         }
 
-        /* 金色浮光背景動畫 */
         .title-logo-container::before {
             content: "";
             position: absolute;
-            width: 1520px;
-            height: 300px;
+            width: 420px;
+            height: 200px;
             background: radial-gradient(circle, rgba(216, 190, 145, 0.25) 0%, rgba(216, 190, 145, 0.05) 50%, rgba(3, 3, 3, 0) 70%);
             border-radius: 50%;
             z-index: -1;
-            filter: blur(30px);
-            animation: gold-glimmer 10s infinite alternate ease-in-out;
+            filter: blur(10px);
+            animation: gold-glimmer 6s infinite alternate ease-in-out;
         }
 
         @keyframes gold-glimmer {
-            0% {
-                transform: scale(0.9);
-                opacity: 0.6;
-                background: radial-gradient(circle, rgba(216, 190, 145, 0.2) 0%, rgba(216, 190, 145, 0.03) 50%, rgba(3, 3, 3, 0) 70%);
-            }
-            50% {
-                transform: scale(1.15);
-                opacity: 0.95;
-                background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(216, 190, 145, 0.08) 50%, rgba(3, 3, 3, 0) 70%);
-            }
-            100% {
-                transform: scale(0.95);
-                opacity: 0.7;
-                background: radial-gradient(circle, rgba(218, 165, 32, 0.25) 0%, rgba(216, 190, 145, 0.04) 50%, rgba(3, 3, 3, 0) 70%);
-            }
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 0.95; background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(216, 190, 145, 0.08) 50%, rgba(3, 3, 3, 0) 70%); }
+            100% { transform: scale(0.95); opacity: 0.7; }
         }
 
-        /* 標題圖片：完美浮動動畫，移除臨時虛線提示框，直接支持自定義標題圖片 */
         .main-title-logo {
-            max-width: 1580px;
-            max-height: 1190px;
+            max-width: 980px;
+            max-height: 250px;
             width: auto;
             height: auto;
             object-fit: contain;
             transition: all 0.5s ease;
             filter: drop-shadow(0 4px 15px rgba(0,0,0,0.95));
-            animation: logo-float 4s infinite ease-in-out; /* 引入上下浮動 */
+            animation: logo-float 4s infinite ease-in-out;
         }
 
         @keyframes logo-float {
@@ -203,8 +189,7 @@
             100% { box-shadow: 0 0 25px rgba(216, 190, 145, 0.6); }
         }
 
-
-        /* ================= 4. 簡約國風性別選擇界面 ================= */
+        /* ================= 4. 性別選擇界面 ================= */
         #gender-view {
             background: radial-gradient(circle, #0e0d0c 0%, #030303 100%);
             display: flex;
@@ -268,7 +253,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 40px 20px 25px 20px;
-            perspective: 1200px; /* 開啟3D空間透視 */
+            perspective: 1200px;
         }
 
         .menu-header {
@@ -291,36 +276,30 @@
             letter-spacing: 2px;
         }
 
-        /* 16字碑 3D 滾動視差容器 - 加高適配 */
         .stele-parallax-container {
             width: 100%;
             max-width: 1350px;
-            height: 64vh; /* 再次提高容器高度，支持更高的卡片 */
+            height: 72vh;
             display: flex;
-            align-items: flex-end; /* 底部對齊 */
+            align-items: flex-end;
             overflow-x: auto;
-            overflow-y: visible;   /* 允許頂部書法字體向上超載溢出 */
-            padding: 120px 30px 35px 30px; /* 增加頂部內邊距以容納更長卡片和溢出書法 */
+            overflow-y: visible;
+            padding: 130px 30px 35px 30px;
             gap: 28px;
             z-index: 5;
             transition: transform 0.1s ease-out;
             scrollbar-width: thin;
             scrollbar-color: #4e3e2c transparent;
+            /* 讓手機瀏覽器有平滑滾動體驗 */
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* 美化滾動條 */
-        .stele-parallax-container::-webkit-scrollbar {
-            height: 6px;
-        }
-        .stele-parallax-container::-webkit-scrollbar-thumb {
-            background-color: #4e3e2c;
-            border-radius: 3px;
-        }
+        .stele-parallax-container::-webkit-scrollbar { height: 6px; }
+        .stele-parallax-container::-webkit-scrollbar-thumb { background-color: #4e3e2c; border-radius: 3px; }
 
-        /* 單個字碑 - 高度大幅加高 (290px -> 360px) */
         .stele-card {
-            flex: 0 0 230px; /* 寬度稍微拉寬 */
-            height: 420px;   /* 再次拉長卡片，使全螢幕下視覺更具延伸感與震撼力 */
+            flex: 0 0 220px;
+            height: 420px;
             background-color: #12100e;
             background-size: cover;
             background-position: center;
@@ -331,7 +310,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 85px 20px 30px 20px; /* 拉長 padding，頂部預留更多空間給書法，底部更有呼吸感 */
+            padding: 105px 20px 35px 20px;
             position: relative;
             cursor: pointer;
             box-shadow: 0 12px 30px rgba(0,0,0,0.95);
@@ -339,35 +318,34 @@
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* 3D 視差微調：鼠標懸停 */
-        .stele-card:hover {
-            transform: translate3d(0, -12px, 25px) rotateY(6deg);
-            border-color: #d8be91;
-            box-shadow: 0 18px 40px rgba(216,190,145,0.3);
+        /* 3D 視差互動，僅在支持 hover 的設備生效 */
+        @media (hover: hover) and (pointer: fine) {
+            .stele-card:hover {
+                transform: translate3d(0, -12px, 25px) rotateY(6deg);
+                border-color: #d8be91;
+                box-shadow: 0 18px 40px rgba(216,190,145,0.3);
+            }
+            .stele-card:hover .stele-word-img {
+                transform: translate(-50%, -62%) scale(1.15) !important;
+                filter: sepia(1) saturate(3) hue-rotate(15deg) brightness(1.4) drop-shadow(0 0 18px rgba(218, 165, 32, 1)) !important;
+            }
         }
 
-        /* 書法字體圖片（基礎樣式） */
         .stele-word-img {
             position: absolute;
             top: 0;
             left: 50%;
-            transform: translate(-50%, -55%); /* 默認向上溢出約 55% */
-            width: 100px; /* 配合大卡片微調寬度 */
-            height: 100px;
+            transform: translate(-50%, -55%);
+            width: 105px;
+            height: 105px;
             object-fit: contain;
             z-index: 10;
             filter: sepia(1) saturate(1.8) hue-rotate(10deg) brightness(1.05) drop-shadow(0 4px 8px rgba(0,0,0,0.95));
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease;
         }
 
-        /* 懸停時書法字配合動畫微調 */
-        .stele-card:hover .stele-word-img {
-            transform: translate(-50%, -62%) scale(1.15) !important;
-            filter: sepia(1) saturate(3) hue-rotate(15deg) brightness(1.4) drop-shadow(0 0 18px rgba(218, 165, 32, 1)) !important;
-        }
-
         .stele-name {
-            font-size: 1.35rem; /* 配合卡片比例微調字級 */
+            font-size: 1.4rem;
             font-weight: bold;
             color: #eae1d4;
             letter-spacing: 2px;
@@ -380,142 +358,43 @@
             color: #b5aba0;
             text-align: center;
             line-height: 1.5;
-            height: 52px; /* 增加高度 */
+            height: 52px;
             overflow: hidden;
             text-shadow: 0 1px 4px rgba(0,0,0,0.9);
             z-index: 2;
         }
 
-        /* 碑林狀態樣式：未解鎖 */
-        .stele-card.locked {
-            filter: grayscale(1) contrast(0.7);
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
-        .stele-card.locked::after {
-            content: "🔒";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -10%);
-            font-size: 1.8rem;
-            opacity: 0.7;
-            z-index: 3;
-        }
-
-        /* 碑林狀態樣式：可挑戰 */
-        .stele-card.available {
-            border-color: #8e7249;
-            box-shadow: 0 0 15px rgba(142, 114, 73, 0.25);
-            animation: pulse-border 2s infinite alternate;
-        }
+        .stele-card.locked { filter: grayscale(1) contrast(0.7); opacity: 0.35; cursor: not-allowed; }
+        .stele-card.locked::after { content: "🔒"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -10%); font-size: 1.8rem; opacity: 0.7; z-index: 3; }
+        .stele-card.available { border-color: #8e7249; box-shadow: 0 0 15px rgba(142, 114, 73, 0.25); animation: pulse-border 2s infinite alternate; }
+        .stele-card.completed { border-color: #4b6a4f; box-shadow: inset 0 0 15px rgba(75, 106, 79, 0.35), 0 5px 15px rgba(0,0,0,0.8); }
+        .stele-card.completed .stele-name { color: #d8be91; text-shadow: 0 0 8px rgba(216, 190, 145, 0.4); }
 
         @keyframes pulse-border {
             0% { border-color: #3c3224; box-shadow: 0 0 10px rgba(0,0,0,0.8); }
             100% { border-color: #d8be91; box-shadow: 0 0 20px rgba(216, 190, 145, 0.3); }
         }
 
-        /* 碑林狀態樣式：已通關 */
-        .stele-card.completed {
-            border-color: #4b6a4f;
-            box-shadow: inset 0 0 15px rgba(75, 106, 79, 0.35), 0 5px 15px rgba(0,0,0,0.8);
-        }
-        .stele-card.completed .stele-name {
-            color: #d8be91;
-            text-shadow: 0 0 8px rgba(216, 190, 145, 0.4);
-        }
-
         /* ================= 6. 專屬書法字魂動動畫 CSS 引擎 ================= */
+        .anim-libai-effect { animation: anim-libai 3.5s infinite ease-in-out; }
+        @keyframes anim-libai { 0%, 100% { transform: translate(-50%, -55%) scale(1) rotate(-2deg); filter: sepia(1) saturate(2.5) hue-rotate(15deg) brightness(1.15) drop-shadow(0 0 6px rgba(255,215,0,0.6));} 50% { transform: translate(-49%, -57%) scale(1.05) rotate(3deg); filter: sepia(1) saturate(4.5) hue-rotate(25deg) brightness(1.4) drop-shadow(0 0 20px rgba(255,215,0,1));}}
+        
+        .anim-sushi-effect { animation: anim-sushi 5s infinite ease-in-out; }
+        @keyframes anim-sushi { 0%, 100% { transform: translate(-50%, -53%) rotate(-3deg); filter: sepia(1) saturate(2.2) hue-rotate(12deg) brightness(1.2) drop-shadow(0 0 8px rgba(216,190,145,0.7));} 50% { transform: translate(-50%, -58%) rotate(3deg); filter: sepia(1) saturate(3) hue-rotate(18deg) brightness(1.3) drop-shadow(0 0 15px rgba(216,190,145,0.9));}}
+        
+        .anim-liuzongyuan-effect { animation: anim-liuzongyuan 6s infinite ease-in-out; }
+        @keyframes anim-liuzongyuan { 0%, 100% { transform: translate(-50%, -55%) scale(0.97); filter: sepia(1) saturate(1.5) hue-rotate(8deg) brightness(0.95) drop-shadow(0 0 4px rgba(216,190,145,0.4));} 50% { transform: translate(-50%, -55%) scale(1.03); filter: sepia(1) saturate(3.5) hue-rotate(20deg) brightness(1.35) drop-shadow(0 0 25px rgba(216,190,145,1));}}
+        
+        .anim-wangwei-effect { animation: anim-wangwei 7s infinite ease-in-out; }
+        @keyframes anim-wangwei { 0%, 100% { opacity: 0.45; transform: translate(-50%, -54%) scale(0.96); filter: sepia(1) saturate(1.8) hue-rotate(10deg) brightness(1) drop-shadow(0 0 3px rgba(216,190,145,0.3));} 50% { opacity: 1; transform: translate(-50%, -57%) scale(1.02); filter: sepia(1) saturate(2.8) hue-rotate(15deg) brightness(1.25) drop-shadow(0 0 16px rgba(216,190,145,0.85));}}
+        
+        .anim-zhuangzi-effect { animation: anim-zhuangzi 8s infinite ease-in-out; }
+        @keyframes anim-zhuangzi { 0%, 100% { transform: translate(-50%, -55%) translate(0, 0) rotate(0deg); } 25% { transform: translate(-50%, -55%) translate(-4px, -6px) rotate(-2deg); } 50% { transform: translate(-50%, -55%) translate(4px, -3px) rotate(3deg); } 75% { transform: translate(-50%, -55%) translate(-2px, 5px) rotate(-1deg); }}
+        
+        .anim-default-effect { animation: anim-default 4.5s infinite ease-in-out; }
+        @keyframes anim-default { 0%, 100% { transform: translate(-50%, -55%) scale(1); filter: sepia(1) saturate(1.8) hue-rotate(10deg) brightness(1.1) drop-shadow(0 0 5px rgba(216,190,145,0.5));} 50% { transform: translate(-50%, -57%) scale(1.04); filter: sepia(1) saturate(2.5) hue-rotate(15deg) brightness(1.3) drop-shadow(0 0 15px rgba(216,190,145,0.85));}}
 
-        /* [李白 - 狂] 劍氣月華：激烈的左右晃動與高速金光閃爍，彰顯狂傲 */
-        .anim-libai-effect {
-            animation: anim-libai 3.5s infinite ease-in-out;
-        }
-        @keyframes anim-libai {
-            0%, 100% { 
-                transform: translate(-50%, -55%) scale(1) rotate(-2deg); 
-                filter: sepia(1) saturate(2.5) hue-rotate(15deg) brightness(1.15) drop-shadow(0 0 6px rgba(255,215,0,0.6));
-            }
-            50% { 
-                transform: translate(-49%, -57%) scale(1.05) rotate(3deg); 
-                filter: sepia(1) saturate(4.5) hue-rotate(25deg) brightness(1.4) drop-shadow(0 0 20px rgba(255,215,0,1));
-            }
-        }
-
-        /* [蘇軾 - 達] 大江東去：如大江波濤般平滑、寬廣的上下起伏與柔和傾斜 */
-        .anim-sushi-effect {
-            animation: anim-sushi 5s infinite ease-in-out;
-        }
-        @keyframes anim-sushi {
-            0%, 100% { 
-                transform: translate(-50%, -53%) rotate(-3deg);
-                filter: sepia(1) saturate(2.2) hue-rotate(12deg) brightness(1.2) drop-shadow(0 0 8px rgba(216,190,145,0.7));
-            }
-            50% { 
-                transform: translate(-50%, -58%) rotate(3deg);
-                filter: sepia(1) saturate(3) hue-rotate(18deg) brightness(1.3) drop-shadow(0 0 15px rgba(216,190,145,0.9));
-            }
-        }
-
-        /* [柳宗元 - 悟] 心凝形釋：如禪定般極為緩慢的深呼吸，在明暗沉浮間綻放玉石般的光澤 */
-        .anim-liuzongyuan-effect {
-            animation: anim-liuzongyuan 6s infinite ease-in-out;
-        }
-        @keyframes anim-liuzongyuan {
-            0%, 100% { 
-                transform: translate(-50%, -55%) scale(0.97);
-                filter: sepia(1) saturate(1.5) hue-rotate(8deg) brightness(0.95) drop-shadow(0 0 4px rgba(216,190,145,0.4));
-            }
-            50% { 
-                transform: translate(-50%, -55%) scale(1.03);
-                filter: sepia(1) saturate(3.5) hue-rotate(20deg) brightness(1.35) drop-shadow(0 0 25px rgba(216,190,145,1));
-            }
-        }
-
-        /* [王維 - 空] 空山新雨：半官半隱、若隱若現。圖片透明度緩慢縹緲地虛化與凝實 */
-        .anim-wangwei-effect {
-            animation: anim-wangwei 7s infinite ease-in-out;
-        }
-        @keyframes anim-wangwei {
-            0%, 100% { 
-                opacity: 0.45;
-                transform: translate(-50%, -54%) scale(0.96);
-                filter: sepia(1) saturate(1.8) hue-rotate(10deg) brightness(1) drop-shadow(0 0 3px rgba(216,190,145,0.3));
-            }
-            50% { 
-                opacity: 1;
-                transform: translate(-50%, -57%) scale(1.02);
-                filter: sepia(1) saturate(2.8) hue-rotate(15deg) brightness(1.25) drop-shadow(0 0 16px rgba(216,190,145,0.85));
-            }
-        }
-
-        /* [莊子 - 無] 逍遙夢蝶：輕飄虛無。字體不規律地在空間中微微漂浮擺動，不拘一格 */
-        .anim-zhuangzi-effect {
-            animation: anim-zhuangzi 8s infinite ease-in-out;
-        }
-        @keyframes anim-zhuangzi {
-            0%, 100% { transform: translate(-50%, -55%) translate(0, 0) rotate(0deg); }
-            25% { transform: translate(-50%, -55%) translate(-4px, -6px) rotate(-2deg); }
-            50% { transform: translate(-50%, -55%) translate(4px, -3px) rotate(3deg); }
-            75% { transform: translate(-50%, -55%) translate(-2px, 5px) rotate(-1deg); }
-        }
-
-        /* 默認魂動特效（其餘未解鎖名家通關後之基礎特效） */
-        .anim-default-effect {
-            animation: anim-default 4.5s infinite ease-in-out;
-        }
-        @keyframes anim-default {
-            0%, 100% { 
-                transform: translate(-50%, -55%) scale(1); 
-                filter: sepia(1) saturate(1.8) hue-rotate(10deg) brightness(1.1) drop-shadow(0 0 5px rgba(216,190,145,0.5));
-            }
-            50% { 
-                transform: translate(-50%, -57%) scale(1.04); 
-                filter: sepia(1) saturate(2.5) hue-rotate(15deg) brightness(1.3) drop-shadow(0 0 15px rgba(216,190,145,0.85));
-            }
-        }
-
-        /* ================= 7. 十六字神髓石碑 (底部) ================= */
+        /* ================= 7. 十六字神髓石碑 ================= */
         .divine-monument {
             width: 90%;
             max-width: 950px;
@@ -528,76 +407,18 @@
             margin-bottom: 10px;
         }
 
-        .monument-title {
-            font-size: 0.85rem;
-            color: #8c8273;
-            text-align: center;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
+        .monument-title { font-size: 0.85rem; color: #8c8273; text-align: center; letter-spacing: 4px; margin-bottom: 10px; }
+        .monument-grid { display: grid; grid-template-columns: repeat(16, 1fr); gap: 5px; text-align: center; }
+        .monument-char { font-size: 1.35rem; font-family: 'Kaiti', 'DFKai-SB', serif; color: rgba(12,11,10,0.88); font-weight: bold; transition: all 0.8s ease; }
+        .monument-char.active { color: #f7d18f; text-shadow: 0 0 12px #ffdf7a, 0 0 20px rgba(216, 190, 145, 0.6); }
 
-        .monument-grid {
-            display: grid;
-            grid-template-columns: repeat(16, 1fr);
-            gap: 5px;
-            text-align: center;
-        }
-
-        .monument-char {
-            font-size: 1.35rem;
-            font-family: 'Kaiti', 'DFKai-SB', serif;
-            color: rgba(12,11,10,0.88); /* 未點亮為極暗灰色 */
-            font-weight: bold;
-            transition: all 0.8s ease;
-        }
-
-        .monument-char.active {
-            color: #f7d18f;
-            text-shadow: 0 0 12px #ffdf7a, 0 0 20px rgba(216, 190, 145, 0.6);
-        }
-
-        /* ================= 8. 遊戲對話場景 (Stage) ================= */
-        #stage-view {
-            background-color: #000;
-        }
-
-        .stage-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        /* 雙背景流暢淡入淡出 */
-        .bg-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: opacity 1.5s ease-in-out;
-            z-index: 1;
-        }
-
-        .bg-canvas.hidden {
-            opacity: 0;
-        }
-
-        /* 暗角遮罩 */
-        .bg-vignette {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, transparent 25%, rgba(0,0,0,0.9) 100%);
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        /* 角色立繪舞台 */
+        /* ================= 8. 對話場景與立繪舞台 ================= */
+        #stage-view { background-color: #000; }
+        .stage-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        .bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; transition: opacity 1.5s ease-in-out; z-index: 1; }
+        .bg-canvas.hidden { opacity: 0; }
+        .bg-vignette { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 25%, rgba(0,0,0,0.9) 100%); z-index: 2; pointer-events: none; }
+        
         .portrait-stage {
             position: absolute;
             bottom: 230px;
@@ -610,135 +431,86 @@
             justify-content: center;
             pointer-events: none;
         }
-
-        .portrait-img {
-            height: 100%;
-            width: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            animation: gentle-breath 4s ease-in-out infinite alternate;
-        }
-
-        .portrait-img.fade-out {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        @keyframes gentle-breath {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-6px) scale(1.01); }
-        }
+        .portrait-img { height: 100%; width: auto; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9)); transition: opacity 0.5s ease, transform 0.5s ease; animation: gentle-breath 4s ease-in-out infinite alternate; }
+        .portrait-img.fade-out { opacity: 0; transform: translateY(40px); }
+        @keyframes gentle-breath { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-6px) scale(1.01); } }
 
         /* ================= 9. 整合式黑金對話框 ================= */
-        .dialogue-wrapper {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 92%;
-            max-width: 900px;
-            z-index: 10;
+        .dialogue-wrapper { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 900px; z-index: 10; }
+        .name-box { position: absolute; top: -42px; left: 20px; background: linear-gradient(135deg, #1b1916 0%, #0c0b0a 100%); border: 1px solid #8e7249; color: #d8be91; padding: 6px 24px; font-size: 1rem; font-weight: bold; border-radius: 4px 12px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.6); letter-spacing: 2px; }
+        .content-box { background: rgba(10, 9, 8, 0.94); border: 1px solid #483d2f; border-radius: 6px; padding: 25px 35px; min-height: 160px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: space-between; }
+        .dialogue-text { font-size: 1.1rem; line-height: 1.8; letter-spacing: 1.5px; color: #e5e5e5; min-height: 70px; white-space: pre-wrap; }
+        
+        .options-grid { margin-top: 15px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .dialogue-opt-btn { background: rgba(22, 20, 18, 0.7); border: 1px solid #4a3e2e; color: #c4ae8a; padding: 10px 20px; font-size: 0.95rem; text-align: left; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .dialogue-opt-btn:hover { background: linear-gradient(90deg, rgba(142, 114, 73, 0.25) 0%, rgba(10, 10, 10, 0.9) 100%); border-color: #d8be91; color: #ffffff; padding-left: 30px; box-shadow: 0 0 12px rgba(216, 190, 145, 0.25); }
+
+        /* ================= 10. 全局加載遮罩 ================= */
+        #mask-loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #030303; z-index: 1000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .ink-spinner { width: 60px; height: 60px; border: 2px dashed #d8be91; border-radius: 50%; animation: spin 2.5s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        #mask-loader p { margin-top: 25px; color: #d8be91; letter-spacing: 4px; font-size: 0.95rem; }
+
+        /* ================= 11. 手機與平板響應式適配 (RWD) ================= */
+        /* 平板尺寸 (iPad 橫向/直向) */
+        @media (max-width: 1024px) {
+            .stele-parallax-container { height: 65vh; }
+            .stele-card { flex: 0 0 190px; height: 380px; }
+            .portrait-stage { height: 50vh; bottom: 220px; }
         }
 
-        .name-box {
-            position: absolute;
-            top: -42px;
-            left: 20px;
-            background: linear-gradient(135deg, #1b1916 0%, #0c0b0a 100%);
-            border: 1px solid #8e7249;
-            color: #d8be91;
-            padding: 6px 24px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 4px 12px 0 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-            letter-spacing: 2px;
-        }
+        /* 手機尺寸 (iPhone 等) */
+        @media (max-width: 768px) {
+            /* 首頁縮放 */
+            .title-logo-container::before { width: 280px; height: 140px; }
+            .main-title-logo { max-width: 85vw; }
+            .gender-title { font-size: 1.6rem; margin-bottom: 30px; }
+            
+            /* 性別選擇改為垂直排列 */
+            .gender-box { flex-direction: column; gap: 20px; }
+            .gender-card { width: 80vw; max-width: 320px; padding: 25px 40px; }
 
-        .content-box {
-            background: rgba(10, 9, 8, 0.94);
-            border: 1px solid #483d2f;
-            border-radius: 6px;
-            padding: 25px 35px;
-            min-height: 160px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-            backdrop-filter: blur(8px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+            /* 主選單排版縮放與觸控滑動優化 */
+            .menu-header h1 { font-size: 1.8rem; }
+            .menu-header p { font-size: 0.8rem; }
+            .global-controls { top: 10px; left: 10px; right: 10px; }
+            .btn-control { font-size: 0.75rem; padding: 6px 12px; }
 
-        .dialogue-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            letter-spacing: 1.5px;
-            color: #e5e5e5;
-            min-height: 70px;
-            white-space: pre-wrap;
-        }
+            .stele-parallax-container {
+                height: 58vh;
+                padding: 100px 15px 20px 15px;
+                /* iOS原生滑動與卡片吸附 */
+                scroll-snap-type: x mandatory; 
+                scroll-padding: 0 15px;
+            }
+            .stele-card {
+                flex: 0 0 160px;
+                height: 320px;
+                padding: 80px 15px 25px 15px;
+                scroll-snap-align: center; /* 讓卡片滑動時自動置中 */
+            }
+            .stele-name { font-size: 1.2rem; }
+            .stele-quote { font-size: 0.8rem; height: 42px; }
+            .stele-word-img { width: 85px; height: 85px; }
 
-        /* 對話框按鈕 */
-        .options-grid {
-            margin-top: 15px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
+            /* 16字碑自動折疊為兩排 (8列 x 2行) */
+            .monument-grid {
+                grid-template-columns: repeat(8, 1fr);
+                gap: 8px 4px;
+            }
+            .monument-char { font-size: 1.1rem; }
+            .divine-monument { padding: 12px 10px; }
 
-        .dialogue-opt-btn {
-            background: rgba(22, 20, 18, 0.7);
-            border: 1px solid #4a3e2e;
-            color: #c4ae8a;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            text-align: left;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .dialogue-opt-btn:hover {
-            background: linear-gradient(90deg, rgba(142, 114, 73, 0.25) 0%, rgba(10, 10, 10, 0.9) 100%);
-            border-color: #d8be91;
-            color: #ffffff;
-            padding-left: 30px;
-            box-shadow: 0 0 12px rgba(216, 190, 145, 0.25);
-        }
-
-        /* ================= 10. 全局加載/轉場特效遮罩 ================= */
-        #mask-loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #030303;
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ink-spinner {
-            width: 60px;
-            height: 60px;
-            border: 2px dashed #d8be91;
-            border-radius: 50%;
-            animation: spin 2.5s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        #mask-loader p {
-            margin-top: 25px;
-            color: #d8be91;
-            letter-spacing: 4px;
-            font-size: 0.95rem;
+            /* 對話場景 (防止立繪遮住對話) */
+            .portrait-stage {
+                bottom: 210px; /* 根據對話框高度調整 */
+                height: 48vh;
+            }
+            .dialogue-wrapper { bottom: 15px; width: 95%; }
+            .content-box { padding: 15px 20px; min-height: 140px; }
+            .dialogue-text { font-size: 1rem; line-height: 1.6; min-height: 60px; }
+            .name-box { font-size: 0.9rem; padding: 4px 18px; top: -34px; left: 15px; }
+            .dialogue-opt-btn { font-size: 0.85rem; padding: 8px 15px; }
         }
     </style>
 </head>
@@ -757,10 +529,10 @@
         <p id="loader-msg">正在架設跨時空通道...</p>
     </div>
 
-    <!-- 0. 遊戲大廳首頁 (Logo圖片預留位置版) -->
+    <!-- 0. 遊戲大廳首頁 (Logo圖片預留位置版 - 支持浮空浮光特效) -->
     <div id="title-view" class="view-panel active">
         <div class="title-container">
-            <!-- 預留標題圖片位置：當 src="" 時以虛線框和文字佔位符顯示，您可以直接把您的圖片地址填寫在 src 中 -->
+            <!-- 預留標題圖片位置：預設讀取本地 assets 文件，具備浮空和黃金浮光背景特效 -->
             <div class="title-logo-container">
                 <img id="title-logo" class="main-title-logo" src="images/logo/title_logo.png" alt="古文十六夜 Logo">
             </div>
@@ -774,11 +546,11 @@
         <div class="gender-box">
             <div class="gender-card" onclick="selectGender('male')">
                 <h3>男</h3>
-                <p>意氣風發，志在千秋</p>
+                <p>意氣風發，志在千秋的公子</p>
             </div>
             <div class="gender-card" onclick="selectGender('female')">
                 <h3>女</h3>
-                <p>溫婉聰慧，靈動尋心</p>
+                <p>溫婉聰慧，靈動尋心的姑娘</p>
             </div>
         </div>
     </div>
@@ -786,8 +558,9 @@
     <!-- 2. 主選單選單 -->
     <div id="menu-view" class="view-panel">
         <div class="menu-header">
+            <!-- 視覺優化：此抬頭保持純淨大氣的「古文十六夜」，不再添加（公子/姑娘）後綴 -->
             <h1 id="user-greeting">古文十六夜</h1>
-            <p>移動滑鼠以透視歷史，點擊金色字碑開啟冒險對話</p>
+            <p>橫向滑動以透視歷史，點擊古人字碑開啟對話</p>
         </div>
 
         <!-- 3D 視差卡片容器 -->
@@ -836,96 +609,31 @@
 
     // 16位古人數據庫
     const characters = [
-        { 
-            id: "li_bai", name: "李白", code: "狂", quote: "對影成三人，永結無情遊", isUnlocked: true,
-            cardBg: "images/card_bgs/libai_card.jpg", // 李白卡片底圖 (月夜)
-            wordImg: "images/calligraphy/libai_word.png" // 書法圖片占位符
-        }, 
-        { 
-            id: "su_shi", name: "蘇軾", code: "達", quote: "人生如夢，一尊還酹江月", isUnlocked: true,
-            cardBg: "images/card_bgs/sushi_card.jpg", // 蘇軾卡片底圖 (大江)
-            wordImg: "images/calligraphy/sushi_word.png" // 書法圖片占位符
-        },
-        { 
-            id: "liu_zong_yuan", name: "柳宗元", code: "悟", quote: "心凝形釋，與萬化冥合", isUnlocked: false,
-            cardBg: "images/card_bgs/liuzongyuan_card.jpg",
-            wordImg: "images/calligraphy/liuzongyuan_word.png"
-        },
-        { 
-            id: "wang_wei", name: "王維", code: "空", quote: "明月松間照，清泉石上流", isUnlocked: false,
-            cardBg: "images/card_bgs/wangwei_card.jpg",
-            wordImg: "images/calligraphy/wangwei_word.png"
-        },
-        { 
-            id: "zhuang_zi", name: "莊子", code: "無", quote: "獨與天地精神往來", isUnlocked: false,
-            cardBg: "images/card_bgs/zhuangzi_card.jpg",
-            wordImg: "images/calligraphy/zhuangzi_word.png"
-        },
-        { 
-            id: "kong_zi", name: "孔子", code: "仁", quote: "克己復禮為仁", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=仁&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "meng_zi", name: "孟子", code: "義", quote: "生亦我所欲，義亦我所欲", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=義&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "xun_zi", name: "荀子", code: "學", quote: "君子曰：學不可以已", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=學&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "han_yu", name: "韓愈", code: "師", quote: "弟子不必不如師，師不必賢於弟子", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1470115636472-8d21172dac5f?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=師&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "zhu_ge_liang", name: "諸葛亮", code: "忠", quote: "鞠躬盡瘁，死而後已", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1434064511983-18c6dae20ed5?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=忠&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "fan_zhong_yan", name: "范仲淹", code: "憂", quote: "先天下之憂而憂，後天下之樂而樂", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=憂&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "xin_qi_ji", name: "辛棄疾", code: "豪", quote: "眾裡尋他千百度，驀然回首", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=豪&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "su_xun", name: "蘇洵", code: "辯", quote: "六國破滅，非兵不利，戰不善", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=辯&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "lin_xiang_ru", name: "藺相如", code: "勇", quote: "以先國家之急而後私仇也", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=勇&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "li_qing_zhao", name: "李清照", code: "愁", quote: "這次第，怎一個愁字了得", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=愁&backgroundColor=ffffff&textColor=000000"
-        },
-        { 
-            id: "du_fu", name: "杜甫", code: "聖", quote: "無邊落木蕭蕭下，不盡長江滾滾來", isUnlocked: false,
-            cardBg: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=400&auto=format&fit=crop",
-            wordImg: "https://api.dicebear.com/7.x/initials/svg?seed=聖&backgroundColor=ffffff&textColor=000000"
-        }
+        { id: "li_bai", name: "李白", code: "狂", quote: "永結無情遊，相期邈雲漢", isUnlocked: true,　cardBg: "images/card_bgs/libai_card.jpg",　wordImg: "images/calligraphy/libai_word.png" }, 
+        { id: "su_shi", name: "蘇軾", code: "達", quote: "人間如夢，一尊還酹江月", isUnlocked: true,　cardBg: "images/card_bgs/sushi_card.jpg",　wordImg: "images/calligraphy/sushi_word.png" },
+        { id: "liu_zong_yuan", name: "柳宗元", code: "悟", quote: "心凝形釋，與萬化冥合", isUnlocked: false, cardBg: "images/card_bgs/liuzongyuan_card.jpg", wordImg: "images/calligraphy/liuzongyuan_word.png" },
+        { id: "wang_wei", name: "王維", code: "空", quote: "明月松間照，清泉石上流", isUnlocked: false, cardBg: "images/card_bgs/wangwei_card.jpg", wordImg: "images/calligraphy/wangwei_word.png" },
+        { id: "zhuang_zi", name: "莊子", code: "無", quote: "獨與天地精神往來", isUnlocked: false, cardBg: "himages/card_bgs/zhuangzi_card.jpg", wordImg: "images/calligraphy/zhuangzi_word.png" },
+        { id: "kong_zi", name: "孔子", code: "仁", quote: "克己復禮為仁", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "meng_zi", name: "孟子", code: "義", quote: "生亦我所欲，義亦我所欲", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "xun_zi", name: "荀子", code: "學", quote: "君子曰：學不可以已", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "han_yu", name: "韓愈", code: "師", quote: "弟子不必不如師，師不必賢於弟子", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1470115636472-8d21172dac5f?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "zhu_ge_liang", name: "諸葛亮", code: "忠", quote: "鞠躬盡瘁，死而後已", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1434064511983-18c6dae20ed5?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "fan_zhong_yan", name: "范仲淹", code: "憂", quote: "先天下之憂而憂，後天下之樂而樂", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "xin_qi_ji", name: "辛棄疾", code: "豪", quote: "眾裡尋他千百度，驀然回首", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "su_xun", name: "蘇洵", code: "辯", quote: "六國破滅，非兵不利，戰不善", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "lin_xiang_ru", name: "", code: "勇", quote: "以先國家之急而後私仇也", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "li_qing_zhao", name: "李清照", code: "愁", quote: "這次第，怎一個愁字了得", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=400&auto=format&fit=crop", wordImg: "" },
+        { id: "du_fu", name: "杜甫", code: "聖", quote: "無邊落木蕭蕭下，不盡長江滾滾來", isUnlocked: false, cardBg: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=400&auto=format&fit=crop", wordImg: "" }
     ];
 
-    // 全局玩家存檔狀態
     let gameState = {
-        gender: null, // 'male' or 'female'
-        completedCharacters: [], // 已通關的 characterId
-        unlockedWords: []        // 已解鎖的字
+        gender: null,
+        completedCharacters: [],
+        unlockedWords: []
     };
 
-    // ================= [本地備份劇本 (蘇軾)] =================
+    // ================= [本地備份劇本] =================
     const localBackupScript = {
         "START": {
             speaker: "蘇軾",
@@ -935,8 +643,7 @@
             options: [
                 { text: "正是。晚輩讀先生之詞，深感人生渺小，故特來問道。", next: "WISDOM_1" },
                 { text: "先生好雅興！但在這江畔獨酌，不冷嗎？", next: "HUMOR_1" }
-            ],
-            unlockWord: ""
+            ]
         },
         "WISDOM_1": {
             speaker: "蘇軾",
@@ -944,10 +651,8 @@
             bg: "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?q=80&w=1200&auto=format&fit=crop",
             portrait: "https://api.dicebear.com/7.x/bottts/svg?seed=sushi_smile",
             options: [
-                { text: "晚輩執着於功名學業（DSE），常恐落榜，愧對韶華與父母恩重。", next: "ENDING_1" },
-                { text: "執着於生命無常。韶華易逝，親友會老去，這難道不可悲嗎？", next: "ENDING_2" }
-            ],
-            unlockWord: ""
+                { text: "晚輩執着於功名學業，常恐名落孫山，愧對韶華與父母恩重。", next: "ENDING_1" }
+            ]
         },
         "HUMOR_1": {
             speaker: "蘇軾",
@@ -956,8 +661,7 @@
             portrait: "https://api.dicebear.com/7.x/bottts/svg?seed=sushi_laugh",
             options: [
                 { text: "先生心胸坦蕩。那麼敢問先生，我們如何能像您這般超然物外？", next: "WISDOM_1" }
-            ],
-            unlockWord: ""
+            ]
         },
         "ENDING_1": {
             speaker: "蘇軾",
@@ -968,34 +672,22 @@
                 { text: "（合十受教，將散發着微光的【達】字收於心底）", next: "END_FLOW" }
             ],
             unlockWord: "達"
-        },
-        "ENDING_2": {
-            speaker: "蘇軾",
-            text: "逝者如斯，而未嘗往也；盈虛者如彼，而卒莫消長也。江水雖奔流，但水本身未曾減少；月雖有陰晴，但月之本體並未消失。大自然生生不息，你我亦與之共存。何必哀羨滄海？\n去吧，心之『達』者，無處不逍遙。此【達】字贈予{GENDER_TITLE}！",
-            bg: "https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=1200&auto=format&fit=crop",
-            portrait: "https://api.dicebear.com/7.x/bottts/svg?seed=sushi_trans",
-            options: [
-                { text: "（輕吐一口濁氣，將散發着溫熱的【達】字收於心底）", next: "END_FLOW" }
-            ],
-            unlockWord: "達"
         }
     };
 
     let activeScript = null;
     let currentBgTarget = 1;
 
-    // ================= [1. 初始化與數據加載] =================
     window.onload = function() {
-        loadSave(); // 讀取本地進度
-        renderMonument(); // 渲染神髓石碑
-        renderSteleMenu(); // 渲染字碑
+        loadSave();
+        renderMonument();
+        renderSteleMenu();
     };
 
     function loadSave() {
         const saved = localStorage.getItem("cang_xin_ji_save");
         if (saved) {
             gameState = JSON.parse(saved);
-            updateGreetingText();
         }
         switchView("title-view");
     }
@@ -1010,24 +702,12 @@
         });
     }
 
-    function saveGame() {
-        localStorage.setItem("cang_xin_ji_save", JSON.stringify(gameState));
-    }
-
-    function updateGreetingText() {
-        // 視覺純化：保持主選單抬頭為純粹大氣的「古文十六夜」，不再添加括號代稱
-        document.getElementById("user-greeting").innerText = "古文十六夜";
-    }
+    function saveGame() { localStorage.setItem("cang_xin_ji_save", JSON.stringify(gameState)); }
 
     function confirmResetSave() {
-        const confirmClear = confirm("確定要抹去所有的尋心痕跡，重新開始旅程嗎？");
-        if (confirmClear) {
+        if (confirm("確定要抹去所有的尋心痕跡，重新開始旅程嗎？")) {
             localStorage.removeItem("cang_xin_ji_save");
-            gameState = {
-                gender: null,
-                completedCharacters: [],
-                unlockedWords: []
-            };
+            gameState = { gender: null, completedCharacters: [], unlockedWords: [] };
             showLoader("時空重構中...", 1000).then(() => {
                 switchView("gender-view");
                 renderMonument();
@@ -1036,224 +716,130 @@
         }
     }
 
-    // ================= [2. 全螢幕控制引擎] =================
     function toggleFullscreen() {
         const btn = document.getElementById("btn-fullscreen");
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().then(() => {
-                btn.innerText = "退出全螢幕";
-            }).catch(err => {
-                console.error("無法開啟全螢幕模式:", err);
-            });
+            document.documentElement.requestFullscreen().then(() => btn.innerText = "退出全螢幕").catch(e=>{});
         } else {
-            document.exitFullscreen().then(() => {
-                btn.innerText = "進入全螢幕";
-            });
+            document.exitFullscreen().then(() => btn.innerText = "進入全螢幕");
         }
     }
 
     document.addEventListener("fullscreenchange", () => {
-        const btn = document.getElementById("btn-fullscreen");
-        if (document.fullscreenElement) {
-            btn.innerText = "退出全螢幕";
-        } else {
-            btn.innerText = "進入全螢幕";
-        }
+        document.getElementById("btn-fullscreen").innerText = document.fullscreenElement ? "退出全螢幕" : "進入全螢幕";
     });
 
-    // ================= [3. 視窗切換與過渡] =================
     function switchView(viewId) {
-        document.querySelectorAll(".view-panel").forEach(panel => {
-            panel.classList.remove("active");
-        });
+        document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
         document.getElementById(viewId).classList.add("active");
     }
 
     function showLoader(text, duration = 800) {
         const loader = document.getElementById("mask-loader");
         document.getElementById("loader-msg").innerText = text;
-        loader.style.display = "flex";
-        loader.style.opacity = "1";
-
-        return new Promise(resolve => {
+        loader.style.display = "flex"; loader.style.opacity = "1";
+        return new Promise(res => {
             setTimeout(() => {
-                loader.style.transition = "opacity 0.5s ease";
-                loader.style.opacity = "0";
-                setTimeout(() => {
-                    loader.style.display = "none";
-                    resolve();
-                }, 500);
+                loader.style.transition = "opacity 0.5s ease"; loader.style.opacity = "0";
+                setTimeout(() => { loader.style.display = "none"; res(); }, 500);
             }, duration);
         });
     }
 
-    // ================= [4. 遊戲核心引擎] =================
     function selectGender(gender) {
         gameState.gender = gender;
         saveGame();
-        showLoader("魂穿千古中...")
-        .then(() => {
-            updateGreetingText();
-            switchView("menu-view");
-        });
+        showLoader("魂穿千古中...").then(() => switchView("menu-view"));
     }
 
     function formatDialogueText(text) {
         if (!text) return "";
         const title = gameState.gender === 'male' ? '公子' : '姑娘';
-        const genderChar = gameState.gender === 'male' ? '男' : '女';
-        return text.replace(/{GENDER_TITLE}/g, title)
-                   .replace(/{GENDER}/g, genderChar)
-                   .replace(/少男\/少女/g, title)
-                   .replace(/公子\/姑娘/g, title);
+        return text.replace(/{GENDER_TITLE}/g, title).replace(/少男\/少女/g, title).replace(/公子\/姑娘/g, title);
     }
 
     function renderMonument() {
         const grid = document.getElementById("monument-grid");
         grid.innerHTML = "";
         characters.forEach(char => {
-            const charDiv = document.createElement("div");
-            charDiv.className = "monument-char";
-            charDiv.innerText = char.code;
-            if (gameState.unlockedWords.includes(char.code)) {
-                charDiv.className = "monument-char active";
-            }
-            grid.appendChild(charDiv);
+            const div = document.createElement("div");
+            div.className = "monument-char" + (gameState.unlockedWords.includes(char.code) ? " active" : "");
+            div.innerText = char.code;
+            grid.appendChild(div);
         });
     }
 
-    // 重構卡片渲染：加入底圖 (cardBg) 與書法字「僅通關顯現」及「專屬動畫配對」邏輯
     function renderSteleMenu() {
         const container = document.getElementById("parallax-container");
         container.innerHTML = "";
-
-        // 動畫對應表
-        const animClassMap = {
-            "li_bai": "anim-libai-effect",
-            "su_shi": "anim-sushi-effect",
-            "liu_zong_yuan": "anim-liuzongyuan-effect",
-            "wang_wei": "anim-wangwei-effect",
-            "zhuang_zi": "anim-zhuangzi-effect"
-        };
+        const animClassMap = { "li_bai": "anim-libai-effect", "su_shi": "anim-sushi-effect", "liu_zong_yuan": "anim-liuzongyuan-effect", "wang_wei": "anim-wangwei-effect", "zhuang_zi": "anim-zhuangzi-effect" };
 
         characters.forEach(char => {
             const isCompleted = gameState.completedCharacters.includes(char.id);
             const isAvailable = char.isUnlocked || isCompleted;
-
             const stele = document.createElement("div");
 
-            // 根據通關進度分配不同的 Class
-            if (isCompleted) {
-                stele.className = "stele-card completed";
-            } else if (isAvailable) {
-                stele.className = "stele-card available";
-            } else {
-                stele.className = "stele-card locked";
-            }
+            stele.className = isCompleted ? "stele-card completed" : (isAvailable ? "stele-card available" : "stele-card locked");
+            stele.style.backgroundImage = `linear-gradient(180deg, rgba(10,8,6,0.15) 0%, rgba(3,2,2,0.99) 100%)${isAvailable && char.cardBg ? `, url('${char.cardBg}')` : ''}`;
 
-            // 1. 加強卡片底漆暗色漸變遮罩，增強底圖與文字對比
-            if (isAvailable && char.cardBg) {
-                stele.style.backgroundImage = `linear-gradient(180deg, rgba(10, 8, 6, 0.15) 0%, rgba(3, 2, 2, 0.99) 100%), url('${char.cardBg}')`;
-            } else {
-                stele.style.backgroundImage = `linear-gradient(180deg, rgba(10, 8, 6, 0.1) 0%, rgba(3, 2, 2, 1) 100%)`;
-            }
-
-            // 2. 書法字顯示與專屬動畫邏輯：只有在已通關時，才渲染專屬動畫與書法圖片
-            let wordHTML = "";
+            let wordHTML = `<div style="height: 100px; width: 100px; position: absolute; top: 0; left: 50%; transform: translate(-50%, -55%); z-index: 10;"></div>`;
             if (isCompleted) {
                 const animClass = animClassMap[char.id] || "anim-default-effect";
-                if (char.wordImg && char.wordImg.trim() !== "") {
-                    wordHTML = `<img class="stele-word-img ${animClass}" src="${char.wordImg}" alt="${char.code}">`;
-                } else {
-                    wordHTML = `<div class="stele-word-placeholder ${animClass}">${char.code}</div>`;
-                }
-            } else {
-                // 未通關/未解鎖時，隱藏書法字圖片，並保留一個隱形的定位佔位符以維護 3D Parallax 佈局一致
-                wordHTML = `<div style="height: 100px; width: 100px; position: absolute; top: 0; left: 50%; transform: translate(-50%, -55%); z-index: 10;"></div>`;
+                wordHTML = (char.wordImg && char.wordImg !== "") 
+                    ? `<img class="stele-word-img ${animClass}" src="${char.wordImg}" alt="${char.code}">`
+                    : `<div class="stele-word-img ${animClass}" style="display:flex;align-items:center;justify-content:center;font-size:2rem;color:#f7d18f;font-weight:bold;font-family:'Kaiti';">${char.code}</div>`;
             }
 
-            stele.innerHTML = `
-                ${wordHTML}
-                <div class="stele-name">${char.name}</div>
-                <div class="stele-quote">${isAvailable ? `「${char.quote}」` : '「文言神髓，尚未解鎖」'}</div>
-            `;
-
-            if (isAvailable) {
-                stele.onclick = () => startCharacterStage(char.id, char.name);
-            }
-
+            stele.innerHTML = `${wordHTML}<div class="stele-name">${char.name}</div><div class="stele-quote">${isAvailable ? `「${char.quote}」` : '「文言神髓，尚未解鎖」'}</div>`;
+            if (isAvailable) stele.onclick = () => startCharacterStage(char.id, char.name);
             container.appendChild(stele);
         });
     }
 
     async function startCharacterStage(charId, charName) {
-        // 【核心優化】：立即強制重設對話框，防止上一位角色的對話殘留與舊按鈕顯示，提升過渡沉浸感
         document.getElementById("speaker-tag").innerText = "---";
-        document.getElementById("dialogue-text-area").innerText = "正在開啟跨時空共鳴...";
+        document.getElementById("dialogue-text-area").innerText = ""; 
         document.getElementById("options-area").innerHTML = "";
-        
-        const portrait = document.getElementById("stage-portrait");
-        portrait.classList.add("fade-out"); // 立即隱藏上一次冒險的立繪
+        document.getElementById("stage-portrait").src = "";
+        document.getElementById("stage-portrait").classList.add("fade-out");
+        document.getElementById("canvas-bg-1").style.backgroundImage = "none";
+        document.getElementById("canvas-bg-2").style.backgroundImage = "none";
 
         await showLoader(`正在為你召喚【${charName}】...`, 1200);
         switchView("stage-view");
 
         activeScript = null;
-        if (GAS_API_URL && GAS_API_URL.trim() !== "") {
+        if (GAS_API_URL) {
             try {
                 const response = await fetch(`${GAS_API_URL}?character=${charId}`);
                 const data = await response.json();
-                if (data && !data.error) {
-                    activeScript = data;
-                }
-            } catch (e) {
-                console.warn("未能連接到 GAS 雲端，自動啟用內置本地劇本備份。");
-            }
+                if (data && !data.error) activeScript = data;
+            } catch (e) { console.warn("GAS Connection failed."); }
         }
-
-        if (!activeScript) {
-            activeScript = localBackupScript; 
-        }
-
+        if (!activeScript) activeScript = localBackupScript; 
         renderStageNode("START");
     }
 
     function renderStageNode(nodeId) {
-        if (nodeId === "END_FLOW") {
-            exitStage();
-            return;
-        }
-
+        if (nodeId === "END_FLOW") { exitStage(); return; }
         const node = activeScript[nodeId];
-        if (!node) {
-            console.error("無效節點: " + nodeId);
-            exitStage();
-            return;
-        }
+        if (!node) { exitStage(); return; }
 
         document.getElementById("speaker-tag").innerText = node.speaker;
         document.getElementById("dialogue-text-area").innerText = formatDialogueText(node.text);
-
         switchStageBg(node.bg);
         switchStagePortrait(node.portrait);
 
         const optionsArea = document.getElementById("options-area");
         optionsArea.innerHTML = "";
-
         node.options.forEach(opt => {
             const btn = document.createElement("button");
             btn.className = "dialogue-opt-btn";
             btn.innerText = formatDialogueText(opt.text);
             btn.onclick = () => {
-                if (node.unlockWord && node.unlockWord !== "") {
-                    unlockCharacterWord(node.unlockWord);
-                }
-
-                const portrait = document.getElementById("stage-portrait");
-                portrait.classList.add("fade-out");
-                setTimeout(() => {
-                    renderStageNode(opt.next);
-                }, 300);
+                if (node.unlockWord) unlockCharacterWord(node.unlockWord);
+                document.getElementById("stage-portrait").classList.add("fade-out");
+                setTimeout(() => renderStageNode(opt.next), 300);
             };
             optionsArea.appendChild(btn);
         });
@@ -1267,78 +853,46 @@
     }
 
     function unlockCharacterWord(word) {
-        if (!gameState.unlockedWords.includes(word)) {
-            gameState.unlockedWords.push(word);
-        }
+        if (!gameState.unlockedWords.includes(word)) gameState.unlockedWords.push(word);
         const char = characters.find(c => c.code === word);
         if (char) {
-            if (!gameState.completedCharacters.includes(char.id)) {
-                gameState.completedCharacters.push(char.id);
-            }
+            if (!gameState.completedCharacters.includes(char.id)) gameState.completedCharacters.push(char.id);
             const nextIndex = characters.findIndex(c => c.id === char.id) + 1;
-            if (nextIndex < characters.length) {
-                characters[nextIndex].isUnlocked = true;
-            }
+            if (nextIndex < characters.length) characters[nextIndex].isUnlocked = true;
         }
         saveGame();
     }
 
-    // ================= [5. 雙通道背景切換引擎] =================
     function switchStageBg(bgUrl) {
-        if (!bgUrl || bgUrl.trim() === "") return;
-
-        const bg1 = document.getElementById("canvas-bg-1");
-        const bg2 = document.getElementById("canvas-bg-2");
-
-        if (currentBgTarget === 1) {
-            bg2.style.backgroundImage = `url('${bgUrl}')`;
-            bg2.classList.remove("hidden");
-            bg1.classList.add("hidden");
-            currentBgTarget = 2;
-        } else {
-            bg1.style.backgroundImage = `url('${bgUrl}')`;
-            bg1.classList.remove("hidden");
-            bg2.classList.add("hidden");
-            currentBgTarget = 1;
-        }
+        if (!bgUrl) return;
+        const bg1 = document.getElementById("canvas-bg-1"), bg2 = document.getElementById("canvas-bg-2");
+        if (currentBgTarget === 1) { bg2.style.backgroundImage = `url('${bgUrl}')`; bg2.classList.remove("hidden"); bg1.classList.add("hidden"); currentBgTarget = 2; } 
+        else { bg1.style.backgroundImage = `url('${bgUrl}')`; bg1.classList.remove("hidden"); bg2.classList.add("hidden"); currentBgTarget = 1; }
     }
 
     function switchStagePortrait(portraitUrl) {
         const portrait = document.getElementById("stage-portrait");
-        if (!portraitUrl || portraitUrl.trim() === "") {
-            portrait.classList.add("fade-out");
-            return;
-        }
-
-        const imgPreload = new Image();
-        imgPreload.src = portraitUrl;
-        imgPreload.onload = function() {
-            portrait.src = portraitUrl;
-            portrait.classList.remove("fade-out");
-        };
+        if (!portraitUrl) { portrait.classList.add("fade-out"); return; }
+        const img = new Image(); img.src = portraitUrl;
+        img.onload = () => { portrait.src = portraitUrl; portrait.classList.remove("fade-out"); };
     }
 
-    // ================= [6. 3D 視差主菜單交互效果] =================
+    // 禁用手機端視差，僅支持 PC 鼠標
     function handleParallax(e) {
+        if (window.innerWidth <= 768) return; 
         const container = document.getElementById("parallax-container");
         const rect = container.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const percentX = mouseX / rect.width; 
-
-        const maxTiltY = 12; // 最大左右傾斜角度
-        const currentTiltY = (percentX - 0.5) * maxTiltY * 2; 
-
-        const cards = container.querySelectorAll(".stele-card");
-        cards.forEach((card) => {
-            const shiftAmount = (percentX - 0.5) * 15; // 左右平移像素
+        const percentX = (e.clientX - rect.left) / rect.width; 
+        const currentTiltY = (percentX - 0.5) * 24; 
+        container.querySelectorAll(".stele-card").forEach(card => {
+            const shiftAmount = (percentX - 0.5) * 15;
             card.style.transform = `translate3d(${shiftAmount}px, 0px, 0px) rotateY(${currentTiltY}deg)`;
         });
     }
 
     function resetParallax() {
-        const container = document.getElementById("parallax-container");
-        const cards = container.querySelectorAll(".stele-card");
-        cards.forEach(card => {
+        if (window.innerWidth <= 768) return;
+        document.querySelectorAll(".stele-card").forEach(card => {
             card.style.transform = "translate3d(0, 0, 0) rotateY(0deg)";
         });
     }
